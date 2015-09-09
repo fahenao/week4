@@ -1,10 +1,12 @@
 class Project < ActiveRecord::Base
-	def self.iron_find(number)
-		where(id: number)
+	has_many :entries
+
+	validates :title, uniqueness: true
+	validates :title, presence: true
+	validates :title, length: { maximum: 30 }
+
+	def self.last_updated(num_limit)
+		order(:created_at).limit(num_limit)
 	end
 
-	def self.clean_old(num_hours)
-		limit_date = Time.now - num_hours.hours
-		where("created_at < ?", limit_date).destroy_all
-	end
 end
