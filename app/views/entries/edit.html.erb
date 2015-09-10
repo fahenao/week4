@@ -1,0 +1,12 @@
+<h1>Edit Entry</h1>
+
+<%= form_for @entry do	|f| %>
+	
+		Hour: <%= f.number_field :hour %><br />
+		Minute : <%= f.number_field :minute %><br />
+		Create at : <%= f.date_field :created_at %><br />
+		Comment : <%= f.text_area :comment %><br />
+
+	<%= f.submit "Update Entry" %>
+
+<% end %>

@@ -1,0 +1,17 @@
+<% if @project.id.nil? %>
+	<% button_name = "Create Project" %>
+<% else %>
+	<% button_name = "Edit Project" %>
+<% end %>
+
+<% if @project.errors.messages.present? %>
+	<p>
+		<%= @project.errors.messages %>
+	</p>
+<% end %>
+
+<%= form_for @project do |f| %>
+	Title: <%= f.text_field :title %><br />
+	Description : <%= f.text_field :description %><br />
+<%= f.submit button_name %>
+<% end %>

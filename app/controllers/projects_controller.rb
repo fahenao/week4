@@ -1,19 +1,19 @@
 class ProjectsController < ApplicationController
 
   def index
-    @projects = Project.last_updated(10)
+    @projects = Project.last_updated(40)
   end
 
-  def show
-    id = params[:id]
-    @project = Project.find_by(id: id)
-    if @project.nil?
-      render :no_project_found
+  def create
+    @project = Project.new(project_params)
+    if @project.save
+      flash[:notice] = "Project created successfully"
+      redirect_to project_path(@project.id)
     else
-      render :show
+      @project.errors.messages
+      render :new
     end
   end
-
 
   def new
     #es necesario para el helper. Asigna los inputs a una intancia.
@@ -21,14 +21,14 @@ class ProjectsController < ApplicationController
     render :new
   end
 
-  def create
-    title = params[:project][:title]
-    description = params[:project][:description]
-    @project = Project.new(title: title, description: description)
-    if @project.save
-      redirect_to "/projects/#{@project.id}"
+  def show
+    id = params[:id]
+    @project = Project.find_by(id: id)
+    @entries = @project.entries
+    if @project.nil?
+      render :no_project_found
     else
-      @project.errors.messages
+      render :show
     end
   end
 
@@ -37,5 +37,4 @@ class ProjectsController < ApplicationController
   def project_params
     params.require(:project).permit(:title, :description)
   end
-
 end
